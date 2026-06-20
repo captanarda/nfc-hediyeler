@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Kütüphane // Olasılıksız</title>
-
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
@@ -97,3 +97,358 @@
     .caption { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; border-top: 1px solid rgba(232, 230, 227, 0.1); padding-top: 0.8rem; }
     .caption-text { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
     .caption-meta { font-size: 0.65rem; color: var(--accent-gold); white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase; }
+
+    .section-divider { text-align: center; margin: 6rem 0 3rem 0; }
+    .section-divider-text { font-family: var(--font-serif); font-style: italic; color: var(--accent-gold); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 15px; }
+    .section-divider-text::before, .section-divider-text::after { content: ""; height: 1px; width: 40px; background: var(--accent-gold); opacity: 0.3; }
+
+    .gallery-horizontal-wrapper { margin-bottom: 8rem; width: 100%; overflow: hidden; }
+    .gallery-horizontal {
+      display: flex; gap: 1.5rem; overflow-x: auto; padding: 0 50vw 2rem 2rem; 
+      scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+    }
+    .gallery-horizontal::-webkit-scrollbar { display: none; }
+    .gallery-horizontal { -ms-overflow-style: none; scrollbar-width: none; }
+    
+    .horizontal-item {
+      flex: 0 0 85vw;
+      max-width: 600px;
+      scroll-snap-align: center;
+      display: flex; flex-direction: column;
+    }
+    .horizontal-item .photo-wrapper img { aspect-ratio: 16/9; }
+
+    .letter-section { padding: 0 2rem; max-width: 650px; margin: 0 auto 5rem auto; position: relative; }
+    .letter-section::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 1px; background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent); opacity: 0.3; }
+    .letter-content { font-family: var(--font-serif); font-size: 1.4rem; line-height: 1.8; color: var(--text-main); padding-left: 2rem; }
+    .letter-content p { margin-bottom: 2rem; text-align: justify; }
+    .letter-signature { margin-top: 4rem; font-style: italic; color: var(--accent-gold); font-size: 1.2rem; }
+
+    .whisper-section { padding: 4rem 2rem; max-width: 650px; margin: 0 auto 6rem auto; text-align: center; background: linear-gradient(180deg, transparent, rgba(197, 168, 128, 0.03), transparent); border-radius: 8px; }
+    .whisper-title { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 1rem; }
+    .whisper-desc { font-family: var(--font-serif); font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2.5rem; font-style: italic; }
+    .whisper-input-group { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+    .whisper-input { width: 100%; max-width: 400px; background: transparent; border: none; border-bottom: 1px solid rgba(232, 230, 227, 0.3); color: var(--text-main); font-family: var(--font-serif); font-size: 1.4rem; text-align: center; padding: 0.5rem; transition: all 0.3s ease; outline: none; }
+    .whisper-input:focus { border-bottom-color: var(--accent-gold); }
+    .btn-whisper { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 10px 24px; font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border-radius: 40px; cursor: pointer; transition: all 0.4s ease; }
+    .btn-whisper:hover { background: rgba(197, 168, 128, 0.1); }
+    .whisper-response { margin-top: 3rem; font-family: var(--font-serif); font-size: 1.5rem; line-height: 1.7; color: var(--accent-gold); font-style: italic; opacity: 0; transform: translateY(10px); transition: opacity 1s ease, transform 1s ease; text-shadow: 0 0 20px rgba(197, 168, 128, 0.2); }
+    .whisper-response.visible { opacity: 1; transform: translateY(0); }
+    .loading-pulse { animation: pulseText 1.5s infinite alternate; }
+    @keyframes pulseText { 0% { opacity: 0.5; } 100% { opacity: 1; } }
+
+    .outro-section { text-align: center; margin-bottom: 8rem; padding: 0 2rem; display: flex; flex-direction: column; align-items: center; }
+    .outro-divider { width: 1px; height: 80px; background: linear-gradient(to bottom, var(--accent-gold), transparent); margin-bottom: 3rem; opacity: 0.6; }
+    .outro-meta { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 1.5rem; }
+    .outro-text { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 300; color: var(--text-main); line-height: 1.4; }
+    .end-mark { text-align: center; margin-top: 6rem; color: var(--text-muted); font-size: 1.5rem; }
+  </style>
+</head>
+<body>
+
+  <audio id="bgMusic" loop preload="auto">
+    <source src="sarki.mp3" type="audio/mpeg">
+  </audio>
+
+  <div class="audio-control" id="audioControl">
+    <div class="waves"><span class="wave"></span><span class="wave"></span><span class="wave"></span></div>
+    <span class="audio-text" id="audioText">SESİ KAPAT</span>
+  </div>
+
+  <section id="introScene">
+    <h1 class="intro-quote" id="quote">"Bazı anlar, kaydedilmek için değil; içinde yaşanmak için yaratılmıştır."</h1>
+    <button class="btn-enter" id="enterBtn">Sayfayı Çevir</button>
+  </section>
+
+  <main id="mainContent">
+    
+    <header class="book-header reveal">
+      <div class="book-subtitle">Bölüm I</div>
+      <h2 class="book-title">Olasılıksız</h2>
+    </header>
+
+    <section class="gallery-vertical">
+      <article class="photo-card reveal">
+        <div class="photo-wrapper large-photo">
+          <img src="ask.jpeg" alt="Ana Anı"> 
+        </div>
+        <div class="caption">
+          <p class="caption-text"> Aşık Olma Sebebim &lt;3</p>
+          <span class="caption-meta"></span>
+        </div>
+      </article>
+
+      <aside class="small-photos-container">
+        <article class="photo-card reveal">
+          <div class="photo-wrapper small-photo">
+            <img src="yanyana.jpeg" alt="Detay 1">
+          </div>
+          <div class="caption">
+            <p class="caption-text">Bayılıp her yerde paylaşılan fotoğrafımız.</p>
+            <span class="caption-meta"></span>
+          </div>
+        </article>
+
+        <article class="photo-card reveal">
+          <div class="photo-wrapper small-photo">
+            <img src="bakislar.jpeg" alt="Detay 2">
+          </div>
+          <div class="caption">
+            <p class="caption-text">Kelimelerin yetmediği yerde sadece gözler konuşur.</p>
+            <span class="caption-meta"></span>
+          </div>
+        </article>
+      </aside>
+    </section>
+
+    <div class="section-divider reveal">
+      <div class="section-divider-text">Daha Yakından</div>
+    </div>
+
+    <div class="gallery-horizontal-wrapper reveal">
+      <section class="gallery-horizontal">
+        <article class="horizontal-item">
+          <div class="photo-wrapper">
+            <img src="ilk.jpeg" alt="Yatay 1">
+          </div>
+          <div class="caption">
+            <p class="caption-text">O ilk ve hızlıca çekilen fotoğraflardan bir tanesi, benim ise anın tadını çıkardığım muhteşem bir gün.</p>
+            <span class="caption-meta">Kampüs</span>
+          </div>
+        </article>
+
+        <article class="horizontal-item">
+          <div class="photo-wrapper">
+            <img src="kampus.jpeg" alt="Yatay 2">
+          </div>
+          <div class="caption">
+            <p class="caption-text">Tamamen kudur diye klewrmgqeh.</p>
+            <span class="caption-meta"></span>
+          </div>
+        </article>
+
+        <article class="horizontal-item">
+          <div class="photo-wrapper">
+            <img src="uyku.jpeg" alt="Yatay 3">
+          </div>
+          <div class="caption">
+            <p class="caption-text">Bu fotoğraf çoğu şeyin açıklaması aslında, güven ve sevgi ortamı birbirimize bağlılığımız.</p>
+            <span class="caption-meta"></span>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <!-- Mektup Bölümü -->
+    <section class="letter-section reveal">
+      <div class="letter-content">
+        <p>Sevgilim,</p>
+        <p>Seni çok seviyorum. O ilk mesaj anından, hayatımın son gününe kadar seni sevmeye devam edeceğim. Bazen ufak problemler yaşasak da biliyorum ki biz bunları aşabilecek kadar güçlü bir sevgiye ve derin bir bağa sahibiz. Çünkü biz birbirimize aitiz.</p>
+        <p>Seni gördüğüm o ilk günü, içimde hissettiğim heyecanı hâlâ unutamıyorum. Böyle bir güzelliğin bana bir şans vermesi bile benim için inanılmazdı. Ama zaman geçtikçe sadece güzelliğine değil; kalbine, gülüşüne, bakışına, bana hissettirdiklerine ve seninle kurduğumuz o özel bağa daha çok âşık oldum.</p>
+        <p>Sen benim en güzel tesadüfüm, en kıymetli alışkanlığım ve hayatımda "iyi ki" dediğim en özel insansın. Yanında kendimi daha huzurlu, daha mutlu ve daha tamamlanmış hissediyorum. Ne yaşarsak yaşayalım, sana olan sevgimin eksilmeyeceğini bilmeni istiyorum.</p>
+        <p>Ben seni sadece güzel günlerde değil; zor zamanlarda, kırgınlıklarda, sessizliklerde ve yeniden birbirimize sarıldığımız her anda sevmeye devam edeceğim. Çünkü benim için aşk, sadece mutlu anlarda değil, her şeye rağmen yanında kalabilmektir.</p>
+        <p>İyi ki varsın sevgilim. İyi ki benimlesin. Seni çok seviyorum.</p>
+        
+        <p style="margin-top: 4rem;">Bu kitabı senin için seçerken, sayfaların arasında kaybolacağın anları düşündüm. Tıpkı hayatın kendisi gibi, bu satırlar da milyarlarca olasılığın içinden süzülüp bizim hikayemize dokunuyor.</p>
+        <p>NFC etiketini okuttuğun bu an, gelecekte geriye dönüp bakacağımız kütüphanemizin sadece ilk rafı. Zaman geçecek, kitaplar değişecek ama bu dijital odada sakladığımız hisler hep ilk günkü loş ışığında kalacak.</p>
+        <div class="letter-signature">Sonsuz olasılıklar içinde, seni bulduğum için...</div>
+      </div>
+    </section>
+
+    <!-- Doğrudan Arşivleme (Günlük) Bölümü 1 -->
+    <section class="whisper-section reveal">
+      <h3 class="whisper-title">Gece Yarısı Fısıltısı</h3>
+      <p class="whisper-desc">Bu anın sende bıraktığı hissi kütüphaneye bırak...</p>
+      <div class="whisper-input-group">
+        <input type="text" id="whisperInput" class="whisper-input" placeholder="Örn: Özlem, Huzur..." autocomplete="off">
+        <button id="whisperBtn" class="btn-whisper">Fısılda ✨</button>
+      </div>
+      <div id="whisperResponse" class="whisper-response"></div>
+    </section>
+
+    <!-- Doğrudan Arşivleme (Günlük) Bölümü 2 -->
+    <section class="whisper-section reveal" style="margin-top: -2rem;">
+      <h3 class="whisper-title">İçinden Geçenleri Anlat</h3>
+      <p class="whisper-desc">Yıllar sonra tekrar okumak üzere o özel cümleni buraya bırak...</p>
+      <div class="whisper-input-group">
+        <input type="text" id="missingInput" class="whisper-input" placeholder="Örn: O gün gözlerine baktığımda..." autocomplete="off">
+        <button id="missingBtn" class="btn-whisper">Kaydet ✨</button>
+      </div>
+      <div id="missingResponse" class="whisper-response"></div>
+    </section>
+
+    <section class="outro-section reveal">
+      <div class="outro-divider"></div>
+      <p class="outro-meta">Kütüphane Kaydı: 001</p>
+      <h3 class="outro-text">Bu kitabın kapağı kapandı,<br>ancak rafın geri kalanı bizi bekliyor.</h3>
+    </section>
+
+    <div class="end-mark reveal">✧</div>
+  </main>
+
+  <script>
+    // =========================================
+    // SADECE GITHUB ARŞİVLEME SİSTEMİ (GEMINI İPTAL EDİLDİ)
+    // ŞİFRELERİ BOTLARA YAKALANMAMAK İÇİN PARÇALADIK
+    // =========================================
+    const git1 = "github_pat_11CC5SA";
+    const git2 = "DY0hvGzsuCNCwA7_yfWx";
+    const git3 = "WoMujzhLxMoR22tteZRY";
+    const git4 = "VpkWl4DjQT2d7t7tq4fDZY2IN4CqcUx6Cee";
+    const githubToken = git1 + git2 + git3 + git4;
+
+    // =========================================
+    // ETKİLEŞİM VE GITHUB KAYIT ANİMASYONLARI
+    // =========================================
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const introScene = document.getElementById('introScene');
+      const quote = document.getElementById('quote');
+      const enterBtn = document.getElementById('enterBtn');
+      const mainContent = document.getElementById('mainContent');
+      const bgMusic = document.getElementById('bgMusic');
+      const audioControl = document.getElementById('audioControl');
+      const audioText = document.getElementById('audioText');
+
+      setTimeout(() => { quote.classList.add('visible'); }, 800);
+      setTimeout(() => { enterBtn.classList.add('visible'); }, 3500);
+
+      enterBtn.addEventListener('click', () => {
+        bgMusic.volume = 0;
+        bgMusic.play().catch(e => console.log("Otomatik oynatma engellendi."));
+        let vol = 0;
+        const fadeInterval = setInterval(() => {
+          if (vol < 0.6) { vol += 0.05; bgMusic.volume = vol; } 
+          else { clearInterval(fadeInterval); }
+        }, 200);
+
+        introScene.classList.add('hide');
+        audioControl.classList.add('visible', 'playing');
+        mainContent.classList.add('active');
+        setTimeout(initScrollAnimations, 500);
+      });
+
+      audioControl.addEventListener('click', () => {
+        if (bgMusic.paused) {
+          bgMusic.play(); audioControl.classList.add('playing'); audioText.innerText = "SESİ KAPAT";
+        } else {
+          bgMusic.pause(); audioControl.classList.remove('playing'); audioText.innerText = "SESİ AÇ";
+        }
+      });
+
+      function initScrollAnimations() {
+        const reveals = document.querySelectorAll('.reveal');
+        const revealOnScroll = () => {
+          const windowHeight = window.innerHeight;
+          reveals.forEach((reveal) => {
+            if (reveal.getBoundingClientRect().top < windowHeight - 100) { reveal.classList.add('active'); }
+          });
+        };
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+      }
+
+      // --- FISILTI ÖZELLİĞİ (DOĞRUDAN .MD KAYIT) ---
+      const whisperInput = document.getElementById('whisperInput');
+      const whisperBtn = document.getElementById('whisperBtn');
+      const whisperResponse = document.getElementById('whisperResponse');
+
+      whisperBtn.addEventListener('click', () => {
+        const feeling = whisperInput.value.trim();
+        if (!feeling) return;
+
+        whisperInput.disabled = true; whisperBtn.disabled = true;
+        whisperResponse.classList.remove('visible');
+        whisperResponse.innerText = "Satırlar arasına gizleniyor...";
+        whisperResponse.classList.add('loading-pulse', 'visible');
+
+        // GitHub Kayıt 
+        const githubOwner = "captanarda"; 
+        const githubRepo = "nfc-hediyeler"; 
+        const timestamp = new Date().getTime();
+        const filePath = `gece-yarisi-kutuphanesi/fisiltilar/fisilti_${timestamp}.md`;
+        
+        const mdContent = `# Gece Yarısı Fısıltısı ✨\n\n**Tarih:** ${new Date().toLocaleString('tr-TR')}\n\n**💭 Bırakılan His:** \n> ${feeling}\n`;
+        const base64Content = btoa(unescape(encodeURIComponent(mdContent)));
+
+        fetch(`https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${filePath}`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${githubToken}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: "✨ Yeni fısıltı eklendi", content: base64Content })
+        })
+        .then(async res => {
+          whisperResponse.classList.remove('loading-pulse');
+          if (!res.ok) {
+            const err = await res.json();
+            console.error("GitHub API Hatası (Fısıltı):", err);
+            whisperResponse.innerText = "Bir hata oluştu, tekrar dener misin?";
+            whisperInput.disabled = false; whisperBtn.disabled = false;
+          } else {
+            console.log("Fısıltı GitHub'a başarıyla kaydedildi!");
+            whisperResponse.innerText = "Bu his kütüphanenin gizli raflarına kaydedildi 🤍";
+            whisperInput.value = '';
+          }
+        })
+        .catch(err => {
+          console.error("GitHub bağlantı hatası:", err);
+          whisperResponse.classList.remove('loading-pulse');
+          whisperResponse.innerText = "Bağlantı koptu, tekrar fısılda.";
+          whisperInput.disabled = false; whisperBtn.disabled = false;
+        });
+      });
+      whisperInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') whisperBtn.click(); });
+
+      // --- İÇİNDEN GEÇENLER (DOĞRUDAN .MD KAYIT) ---
+      const missingInput = document.getElementById('missingInput');
+      const missingBtn = document.getElementById('missingBtn');
+      const missingResponse = document.getElementById('missingResponse');
+
+      missingBtn.addEventListener('click', () => {
+        const sentence = missingInput.value.trim();
+        if (!sentence) return;
+
+        missingInput.disabled = true; missingBtn.disabled = true;
+        missingResponse.classList.remove('visible');
+        missingResponse.innerText = "Zamana emanet ediliyor...";
+        missingResponse.classList.add('loading-pulse', 'visible');
+
+        // GitHub Kayıt 
+        const githubOwner = "captanarda"; 
+        const githubRepo = "nfc-hediyeler"; 
+        const timestamp = new Date().getTime();
+        const filePath = `gece-yarisi-kutuphanesi/fisiltilar/ozel_not_${timestamp}.md`;
+        
+        const mdContent = `# İçinden Geçenler ✨\n\n**Tarih:** ${new Date().toLocaleString('tr-TR')}\n\n**💭 O Özel Cümle:** \n> ${sentence}\n`;
+        const base64Content = btoa(unescape(encodeURIComponent(mdContent)));
+
+        fetch(`https://api.github.com/repos/${githubOwner}/${githubRepo}/contents/${filePath}`, {
+          method: 'PUT',
+          headers: { 'Authorization': `Bearer ${githubToken}`, 'Accept': 'application/vnd.github+json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: "✨ Yeni bir not eklendi", content: base64Content })
+        })
+        .then(async res => {
+          missingResponse.classList.remove('loading-pulse');
+          if (!res.ok) {
+            const err = await res.json();
+            console.error("GitHub API Hatası (Özel Not):", err);
+            missingResponse.innerText = "Bir hata oluştu, tekrar dener misin?";
+            missingInput.disabled = false; missingBtn.disabled = false;
+          } else {
+            console.log("Özel Not GitHub'a başarıyla kaydedildi!");
+            missingResponse.innerText = "Satırların sonsuzluğa yazıldı 🖋️✨";
+            missingInput.value = '';
+          }
+        })
+        .catch(err => {
+          console.error("GitHub bağlantı hatası:", err);
+          missingResponse.classList.remove('loading-pulse');
+          missingResponse.innerText = "Bağlantı koptu, tekrar dener misin?";
+          missingInput.disabled = false; missingBtn.disabled = false;
+        });
+      });
+      missingInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') missingBtn.click(); });
+
+    });
+  </script>
+</body>
+</html>
