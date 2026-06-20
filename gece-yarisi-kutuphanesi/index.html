@@ -1,200 +1,99 @@
-    .section-divider { text-align: center; margin: 6rem 0 3rem 0; }
-    .section-divider-text { font-family: var(--font-serif); font-style: italic; color: var(--accent-gold); font-size: 1.5rem; display: flex; align-items: center; justify-content: center; gap: 15px; }
-    .section-divider-text::before, .section-divider-text::after { content: ""; height: 1px; width: 40px; background: var(--accent-gold); opacity: 0.3; }
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kütüphane // Olasılıksız</title>
 
-    .gallery-horizontal-wrapper { margin-bottom: 8rem; width: 100%; overflow: hidden; }
-    .gallery-horizontal {
-      display: flex; gap: 1.5rem; overflow-x: auto; padding: 0 50vw 2rem 2rem;
-      scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch;
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-core: #0A0B10;
+      --bg-surface: #12141D;
+      --text-main: #E8E6E3;
+      --text-muted: #8B8F98;
+      --accent-gold: #C5A880;
+      --font-serif: 'Cormorant Garamond', serif;
+      --font-sans: 'Inter', sans-serif;
+      --ease-premium: cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .gallery-horizontal::-webkit-scrollbar { display: none; }
-    .gallery-horizontal { -ms-overflow-style: none; scrollbar-width: none; }
 
-    .horizontal-item {
-      flex: 0 0 85vw;
-      max-width: 600px;
-      scroll-snap-align: center;
-      display: flex; flex-direction: column;
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      background-color: var(--bg-core); color: var(--text-main);
+      font-family: var(--font-sans); overflow-x: hidden; line-height: 1.6;
     }
-    .horizontal-item .photo-wrapper img { aspect-ratio: 16/9; }
 
-    .letter-section { padding: 0 2rem; max-width: 650px; margin: 0 auto 5rem auto; position: relative; }
-    .letter-section::before { content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 1px; background: linear-gradient(to bottom, transparent, var(--accent-gold), transparent); opacity: 0.3; }
-    .letter-content { font-family: var(--font-serif); font-size: 1.4rem; line-height: 1.8; color: var(--text-main); padding-left: 2rem; }
-    .letter-content p { margin-bottom: 2rem; text-align: justify; }
-    .letter-signature { margin-top: 4rem; font-style: italic; color: var(--accent-gold); font-size: 1.2rem; }
+    body::before {
+      content: ""; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)"/%3E%3C/svg%3E');
+      opacity: 0.015; pointer-events: none; z-index: 999; animation: grain 8s steps(10) infinite;
+    }
+    @keyframes grain { 0%, 100% { transform:translate(0, 0); } 50% { transform:translate(-5%, 5%); } }
 
-    .whisper-section { padding: 4rem 2rem; max-width: 650px; margin: 0 auto 6rem auto; text-align: center; background: linear-gradient(180deg, transparent, rgba(197, 168, 128, 0.03), transparent); border-radius: 8px; }
-    .whisper-title { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 1rem; }
-    .whisper-desc { font-family: var(--font-serif); font-size: 1.2rem; color: var(--text-muted); margin-bottom: 2.5rem; font-style: italic; }
-    .whisper-input-group { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
-    .whisper-input { width: 100%; max-width: 400px; background: transparent; border: none; border-bottom: 1px solid rgba(232, 230, 227, 0.3); color: var(--text-main); font-family: var(--font-serif); font-size: 1.4rem; text-align: center; padding: 0.5rem; transition: all 0.3s ease; outline: none; }
-    .whisper-input:focus { border-bottom-color: var(--accent-gold); }
-    .btn-whisper { background: transparent; border: 1px solid var(--accent-gold); color: var(--accent-gold); padding: 10px 24px; font-family: var(--font-sans); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; border-radius: 40px; cursor: pointer; transition: all 0.4s ease; }
-    .btn-whisper:hover { background: rgba(197, 168, 128, 0.1); }
-    .btn-whisper:disabled { opacity: 0.55; cursor: wait; }
-    .whisper-response { margin-top: 3rem; font-family: var(--font-serif); font-size: 1.5rem; line-height: 1.7; color: var(--accent-gold); font-style: italic; opacity: 0; transform: translateY(10px); transition: opacity 1s ease, transform 1s ease; text-shadow: 0 0 20px rgba(197, 168, 128, 0.2); white-space: pre-line; }
-    .whisper-response.visible { opacity: 1; transform: translateY(0); }
-    .whisper-response .muted-line { color: var(--text-muted); }
+    #introScene {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+      background-color: var(--bg-core); display: flex; flex-direction: column;
+      align-items: center; justify-content: center; z-index: 50; padding: 2rem; text-align: center;
+      transition: transform 1.2s var(--ease-premium), opacity 1.2s var(--ease-premium);
+    }
+    .intro-quote {
+      font-family: var(--font-serif); font-size: 2rem; font-weight: 300; font-style: italic;
+      color: var(--text-main); max-width: 600px; opacity: 0; transform: translateY(20px);
+      transition: opacity 1.5s var(--ease-premium), transform 1.5s var(--ease-premium);
+    }
+    .intro-quote.visible { opacity: 1; transform: translateY(0); }
+    .btn-enter {
+      margin-top: 3rem; background: transparent; border: 1px solid rgba(197, 168, 128, 0.4);
+      color: var(--accent-gold); padding: 12px 32px; font-family: var(--font-sans);
+      font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase;
+      border-radius: 40px; cursor: pointer; opacity: 0; transition: all 0.5s ease;
+    }
+    .btn-enter:hover { background: rgba(197, 168, 128, 0.1); border-color: var(--accent-gold); }
+    .btn-enter.visible { opacity: 1; }
+    #introScene.hide { transform: translateY(-100vh); opacity: 0; pointer-events: none; }
 
-    .outro-section { text-align: center; margin-bottom: 8rem; padding: 0 2rem; display: flex; flex-direction: column; align-items: center; }
-    .outro-divider { width: 1px; height: 80px; background: linear-gradient(to bottom, var(--accent-gold), transparent); margin-bottom: 3rem; opacity: 0.6; }
-    .outro-meta { font-family: var(--font-sans); font-size: 0.75rem; letter-spacing: 0.2em; color: var(--accent-gold); text-transform: uppercase; margin-bottom: 1.5rem; }
-    .outro-text { font-family: var(--font-serif); font-size: 1.8rem; font-weight: 300; color: var(--text-main); line-height: 1.4; }
-    .end-mark { text-align: center; margin-top: 6rem; color: var(--text-muted); font-size: 1.5rem; }
-  </style>
-</head>
-<body>
+    .audio-control {
+      position: fixed; top: 2rem; right: 2rem; z-index: 100; display: flex; align-items: center;
+      gap: 8px; cursor: pointer; opacity: 0; transition: opacity 1s ease;
+    }
+    .audio-control.visible { opacity: 1; }
+    .audio-text { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--text-muted); }
+    .waves { display: flex; align-items: flex-end; gap: 2px; height: 12px; }
+    .wave { width: 2px; height: 3px; background: var(--accent-gold); transition: height 0.3s; }
+    .audio-control.playing .wave { animation: soundWave 0.8s ease-in-out infinite alternate; }
+    .audio-control.playing .wave:nth-child(2) { animation-duration: 0.5s; }
+    .audio-control.playing .wave:nth-child(3) { animation-duration: 0.7s; }
+    @keyframes soundWave { 0% { height: 3px; } 100% { height: 12px; } }
 
-  <audio id="bgMusic" loop preload="auto">
-    <source src="sarki.mp3" type="audio/mpeg">
-  </audio>
+    #mainContent { display: none; padding: 15vh 0; width: 100%; margin: 0 auto; overflow-x: hidden; }
+    #mainContent.active { display: block; animation: fadeInContent 2s var(--ease-premium) forwards; }
+    @keyframes fadeInContent { from { opacity: 0; } to { opacity: 1; } }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 1s var(--ease-premium), transform 1s var(--ease-premium); }
+    .reveal.active { opacity: 1; transform: translateY(0); }
 
-  <div class="audio-control" id="audioControl">
-    <div class="waves"><span class="wave"></span><span class="wave"></span><span class="wave"></span></div>
-    <span class="audio-text" id="audioText">SESİ KAPAT</span>
-  </div>
+    .book-header { text-align: center; margin-bottom: 6rem; padding: 0 2rem; }
+    .book-title { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 300; margin-bottom: 1rem; }
+    .book-subtitle { font-size: 0.85rem; color: var(--accent-gold); letter-spacing: 0.15em; text-transform: uppercase; }
 
-  <section id="introScene">
-    <h1 class="intro-quote" id="quote">"Bazı anlar, kaydedilmek için değil; içinde yaşanmak için yaratılmıştır."</h1>
-    <button class="btn-enter" id="enterBtn">Sayfayı Çevir</button>
-  </section>
-
-  <main id="mainContent">
-
-    <header class="book-header reveal">
-      <div class="book-subtitle">Bölüm I</div>
-      <h2 class="book-title">Olasılıksız</h2>
-    </header>
-
-    <section class="gallery-vertical">
-
-      <article class="photo-card reveal">
-        <div class="photo-wrapper large-photo">
-          <img src="ask.jpeg" alt="Ana Anı">
-        </div>
-        <div class="caption">
-          <p class="caption-text"> Aşık Olma Sebebim &lt;3</p>
-          <span class="caption-meta"></span>
-        </div>
-      </article>
-
-      <aside class="small-photos-container">
-        <article class="photo-card reveal">
-          <div class="photo-wrapper small-photo">
-            <img src="yanyana.jpeg" alt="Detay 1">
-          </div>
-          <div class="caption">
-            <p class="caption-text">Bayılıp her yerde paylaşılan fotoğrafımız.</p>
-            <span class="caption-meta"></span>
-          </div>
-        </article>
-
-        <article class="photo-card reveal">
-          <div class="photo-wrapper small-photo">
-            <img src="bakislar.jpeg" alt="Detay 2">
-          </div>
-          <div class="caption">
-            <p class="caption-text">Kelimelerin yetmediği yerde sadece gözler konuşur.</p>
-            <span class="caption-meta"></span>
-          </div>
-        </article>
-      </aside>
-    </section>
-
-    <div class="section-divider reveal">
-      <div class="section-divider-text">Daha Yakından</div>
-    </div>
-
-    <div class="gallery-horizontal-wrapper reveal">
-      <section class="gallery-horizontal">
-
-        <article class="horizontal-item">
-          <div class="photo-wrapper">
-            <img src="ilk.jpeg" alt="Yatay 1">
-          </div>
-          <div class="caption">
-            <p class="caption-text">O ilk ve hızlıca çekilen fotoğraflardan bir tanesi, benim ise anın tadını çıkardığım muhteşem bir gün.</p>
-            <span class="caption-meta">Kampüs</span>
-          </div>
-        </article>
-
-        <article class="horizontal-item">
-          <div class="photo-wrapper">
-            <img src="kampus.jpeg" alt="Yatay 2">
-          </div>
-          <div class="caption">
-            <p class="caption-text">Tamamen kudur diye klewrmgqeh.</p>
-            <span class="caption-meta"></span>
-          </div>
-        </article>
-
-        <article class="horizontal-item">
-          <div class="photo-wrapper">
-            <img src="uyku.jpeg" alt="Yatay 3">
-          </div>
-          <div class="caption">
-            <p class="caption-text">Bu fotoğraf çoğu şeyin açıklaması aslında, güven ve sevgi ortamı birbirimize bağlılığımız.</p>
-            <span class="caption-meta"></span>
-          </div>
-        </article>
-
-      </section>
-    </div>
-
-    <section class="letter-section reveal">
-      <div class="letter-content">
-        <p>Sevgilim,</p>
-        <p>Seni çok seviyorum. O ilk mesaj anından, hayatımın son gününe kadar seni sevmeye devam edeceğim. Bazen ufak problemler yaşasak da biliyorum ki biz bunları aşabilecek kadar güçlü bir sevgiye ve derin bir bağa sahibiz. Çünkü biz birbirimize aitiz.</p>
-        <p>Seni gördüğüm o ilk günü, içimde hissettiğim heyecanı hâlâ unutamıyorum. Böyle bir güzelliğin bana bir şans vermesi bile benim için inanılmazdı. Ama zaman geçtikçe sadece güzelliğine değil; kalbine, gülüşüne, bakışına, bana hissettirdiklerine ve seninle kurduğumuz o özel bağa daha çok âşık oldum.</p>
-        <p>Sen benim en güzel tesadüfüm, en kıymetli alışkanlığım ve hayatımda "iyi ki" dediğim en özel insansın. Yanında kendimi daha huzurlu, daha mutlu ve daha tamamlanmış hissediyorum. Ne yaşarsak yaşayalım, sana olan sevgimin eksilmeyeceğini bilmeni istiyorum.</p>
-        <p>Ben seni sadece güzel günlerde değil; zor zamanlarda, kırgınlıklarda, sessizliklerde ve yeniden birbirimize sarıldığımız her anda sevmeye devam edeceğim. Çünkü benim için aşk, sadece mutlu anlarda değil, her şeye rağmen yanında kalabilmektir.</p>
-        <p>İyi ki varsın sevgilim. İyi ki benimlesin. Seni çok seviyorum.</p>
-
-        <p style="margin-top: 4rem;">Bu kitabı senin için seçerken, sayfaların arasında kaybolacağın anları düşündüm. Tıpkı hayatın kendisi gibi, bu satırlar da milyarlarca olasılığın içinden süzülüp bizim hikayemize dokunuyor.</p>
-        <p>NFC etiketini okuttuğun bu an, gelecekte geriye dönüp bakacağımız kütüphanemizin sadece ilk rafı. Zaman geçecek, kitaplar değişecek ama bu dijital odada sakladığımız hisler hep ilk günkü loş ışığında kalacak.</p>
-        <div class="letter-signature">Sonsuz olasılıklar içinde, seni bulduğum için...</div>
-      </div>
-    </section>
-
-    <section class="whisper-section reveal">
-      <h3 class="whisper-title">Gece Yarısı Fısıltısı</h3>
-      <p class="whisper-desc">Bu anın sende bıraktığı hissi kütüphaneye bırak...</p>
-      <div class="whisper-input-group">
-        <input type="text" id="whisperInput" class="whisper-input" placeholder="Örn: Özlem, Huzur..." autocomplete="off">
-        <button id="whisperBtn" class="btn-whisper">Fısılda ✨</button>
-      </div>
-      <div id="whisperResponse" class="whisper-response" aria-live="polite"></div>
-    </section>
-
-    <section class="whisper-section reveal" style="margin-top: -2rem;">
-      <h3 class="whisper-title">İçinden Geçenleri Anlat</h3>
-      <p class="whisper-desc">Zihninde dolaşan yarım kalmış bir cümleyi buraya bırak, kütüphanemiz onu senin için tamamlasın...</p>
-      <div class="whisper-input-group">
-        <input type="text" id="missingInput" class="whisper-input" placeholder="Örn: O gün gözlerine baktığımda..." autocomplete="off">
-        <button id="missingBtn" class="btn-whisper">Tamamla ✨</button>
-      </div>
-      <div id="missingResponse" class="whisper-response" aria-live="polite"></div>
-    </section>
-
-    <section class="outro-section reveal">
-      <div class="outro-divider"></div>
-      <p class="outro-meta">Kütüphane Kaydı: 001</p>
-      <h3 class="outro-text">Bu kitabın kapağı kapandı,<br>ancak rafın geri kalanı bizi bekliyor.</h3>
-    </section>
-
-    <div class="end-mark reveal">✧</div>
-  </main>
-
-  <script>
-    const whisperReplies = [
-      (feeling) => `Sende ${feeling} diye kıpırdayan ne varsa, bu rafın loşluğunda küçük bir iz gibi kalsın. Bazı duygular cevap istemez; yalnızca sevildiğini bilmek ister.`,
-      (feeling) => `${feeling} bazen insanın içinde sessiz bir kapı açar. Ben o kapının ardında, yine aynı ihtimalin bizi birbirimize getirdiğini duyuyorum.`,
-      (feeling) => `Bu gece ${feeling}, sayfaların arasında unutulmayacak kadar nazik duruyor. Belki de kader, en çok böyle fısıldandığında gerçek olur.`,
-      (feeling) => `${feeling} dediğin şey, bu kütüphanede kaybolmuyor; adını bilmediğimiz bir yıldız gibi yerini buluyor. Ve ben onu her bulduğumda sana biraz daha inanıyorum.`
-    ];
-
-    const missingCompletions = [
-      "zaman sanki biraz yavaşladı; bütün ihtimaller sustu ve geriye yalnızca biz kaldık.",
-      "içimde adını koyamadığım bir ışık uyandı, sanki bütün yollar en başından beri buraya çıkıyordu.",
-      "dünyanın kalabalığı bir anlığına geri çekildi ve ben en sakin cümlemi yine sende buldum.",
+    .gallery-vertical {
+      display: grid; grid-template-columns: 1fr; gap: 2rem; padding: 0 1.5rem; margin-bottom: 4rem; max-width: 1000px; margin-left: auto; margin-right: auto;
+    }
+    @media (min-width: 768px) { .gallery-vertical { grid-template-columns: 5.5fr 4.5fr; gap: 3rem; } }
+    .photo-card { display: flex; flex-direction: column; }
+    .photo-wrapper { overflow: hidden; border-radius: 4px; background-color: var(--bg-surface); margin-bottom: 1rem; }
+    .photo-wrapper img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      filter: grayscale(15%) contrast(110%) brightness(90%); transition: transform 1.5s var(--ease-premium);
+    }
+    .photo-wrapper:hover img { transform: scale(1.03); }
+    .large-photo { height: 100%; } .large-photo img { aspect-ratio: 4/5; }
+    .small-photos-container { display: flex; flex-direction: column; gap: 2rem; justify-content: space-between; }
+    .small-photo img { aspect-ratio: 16/10; }
+    .caption { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; border-top: 1px solid rgba(232, 230, 227, 0.1); padding-top: 0.8rem; }
+    .caption-text { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; }
+    .caption-meta { font-size: 0.65rem; color: var(--accent-gold); white-space: nowrap; letter-spacing: 0.05em; text-transform: uppercase; }
